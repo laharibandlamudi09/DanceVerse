@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💃 DanceVerse</title>
+
+<style>
+body {
+    font-family:"Segoe UI Emoji","Noto Color Emoji",Arial;
+    background:#f4f6f9;
+    margin:0;
+    text-align:center;
+}
+
+.main-layout { display:flex; height:calc(100vh - 120px); }
+
+.left-panel { width:50%; overflow:auto; }
+.right-panel { width:50%; padding:15px; border-left:2px solid #ddd; overflow:auto; }
+
+.container {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    padding:20px;
+}
+
+.card {
+    background:white;
+    border-radius:12px;
+    padding:8px;
+    cursor:pointer;
+}
+.card img { width:100%; height:90px; border-radius:10px; }
+
+.type-btn {
+    background:#eee;
+    padding:8px 12px;
+    margin:6px;
+    border-radius:20px;
+    display:inline-block;
+    cursor:pointer;
+}
+
+/* ✅ GRID: 4 small squares per row */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 per row */
+    gap: 12px;
+    margin-top: 10px;
+}
+
+/* ✅ SMALL SQUARE VIDEO CARDS */
+.video-card {
+    width: 50%;
+    text-align: center;
+}
+
+/* ✅ SQUARE THUMBNAILS */
+.video-card img {
+    width: 50%;
+    height: 80px;           /* controls size */
+    object-fit: cover;       /* keeps image nicely cropped */
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💃 DanceVerse</h1>
+<p>Explore • Learn • Perform 🎵</p>
+
+<div class="main-layout">
+
+<!-- LEFT -->
+<div class="left-panel">
+<div class="container">
+
+<div class="card" onclick="showTypes('hiphop')"><img src="images/hiphop.jpg"><b>Hip-Hop</b></div>
+<div class="card" onclick="showTypes('salsa')"><img src="images/salsa.jpg"><b>Salsa</b></div>
+<div class="card" onclick="showTypes('bharatanatyam')"><img src="images/bharatanatyam.jpg"><b>Bharatanatyam</b></div>
+<div class="card" onclick="showTypes('kuchipudi')"><img src="images/kuchipudi.jpg"><b>Kuchipudi</b></div>
+
+<div class="card" onclick="showTypes('kathak')"><img src="images/kathak.jpg"><b>Kathak</b></div>
+<div class="card" onclick="showTypes('bollywood')"><img src="images/bollywood.jpg"><b>Bollywood</b></div>
+<div class="card" onclick="showTypes('contemporary')"><img src="images/contemporary.jpg"><b>Contemporary</b></div>
+<div class="card" onclick="showTypes('ghoomar')"><img src="images/ghoomar.jpg"><b>Ghoomar</b></div>
+
+<div class="card" onclick="showTypes('kathakali')"><img src="images/kathakali.jpg"><b>Kathakali</b></div>
+<div class="card" onclick="showTypes('bhangra')"><img src="images/bhangra.jpg"><b>Bhangra</b></div>
+<div class="card" onclick="showTypes('dandiya')"><img src="images/dandiya.jpg"><b>Dandiya</b></div>
+<div class="card" onclick="showTypes('breakdance')"><img src="images/breakdance.jpg"><b>Breakdance</b></div>
+
+<div class="card" onclick="showTypes('flamenco')"><img src="images/flamenco.jpg"><b>Flamenco</b></div>
+<div class="card" onclick="showTypes('odissi')"><img src="images/odissi.jpg"><b>Odissi</b></div>
+<div class="card" onclick="showTypes('ballet')"><img src="images/ballet.jpg"><b>Ballet</b></div>
+<div class="card" onclick="showTypes('garba')"><img src="images/garba.jpg"><b>Garba</b></div>
+
+</div>
+</div>
+
+<!-- RIGHT -->
+<div class="right-panel">
+<div id="info"></div>
+<div id="subtypes"></div>
+<div id="videos"></div>
+</div>
+
+</div>
+
+<script>
+
+// DATA
+const data = {
+hiphop:{desc:"Street dance",types:["Breaking","Popping","Locking"]},
+salsa:{desc:"Latin dance",types:["Cuban","LA","New York"]},
+bharatanatyam:{desc:"Classical dance",types:["Pandanalur","Vazhuvoor","Kalakshetra"]},
+kuchipudi:{desc:"AP dance",types:["Margam","Yakshagana","Solo","Group"]},
+kathak:{desc:"North dance",types:["Lucknow","Jaipur","Banaras"]},
+bollywood:{desc:"Film dance",types:["Classical","Western","Folk"]},
+contemporary:{desc:"Modern",types:["Lyrical","Modern","Floorwork"]},
+ghoomar:{desc:"Rajasthan",types:["Traditional","Stage","Fusion"]},
+kathakali:{desc:"Kerala",types:["Kalluvazhi","Thekkan","Vadakkan"]},
+bhangra:{desc:"Punjab",types:["Traditional","Stage","Fusion"]},
+dandiya:{desc:"Stick",types:["Raas","Two Stick","Modern"]},
+breakdance:{desc:"Acrobatic",types:["Toprock","Footwork","Power Moves"]},
+flamenco:{desc:"Spain",types:["Baile","Cante","Toque"]},
+odissi:{desc:"Odisha",types:["Mahari","Gotipua","Modern"]},
+ballet:{desc:"Western",types:["Classical","Neoclassical","Contemporary"]},
+garba:{desc:"Gujarati",types:["Traditional","Raas","Modern"]}
+};
+
+// ✅ ALL LINKS (FROM YOUR ORIGINAL CODE)
+const tutorials = {
+hiphop:{
+Breaking:["https://youtube.com/shorts/ymi5vweJLwI","https://youtu.be/nWrcsy-KPoE","https://youtube.com/shorts/fB-g4wslqPY"],
+Popping:["https://youtu.be/DxO42RnBI-A","https://youtube.com/shorts/4KZa5QrrlrA","https://youtu.be/MvbYzMbNuLo"],
+Locking:["https://youtube.com/shorts/BcPLGd_iKcw"]
+},
+salsa:{
+Cuban:["https://youtube.com/shorts/Jpw67ufnOxw","https://youtu.be/CuOceGLa85U"],
+LA:["https://youtube.com/shorts/g3U7PMUdCCY","https://youtube.com/shorts/asTYArGlB-U"],
+"New York":["https://youtube.com/shorts/jzvymn0PlC0"]
+},
+bharatanatyam:{
+Pandanalur:["https://youtu.be/elQaw72ovbU"],
+Vazhuvoor:["https://youtu.be/BDl1J-N5T7Y"],
+Kalakshetra:["https://youtu.be/MXJoVCn5njA"]
+},
+kuchipudi:{
+Margam:["https://youtu.be/NvNWr9CFSfs"],
+Yakshagana:["https://youtu.be/udiEysjxrT0"],
+Solo:["https://youtu.be/zrWogEEvZMs"],
+Group:["https://youtube.com/shorts/1xe6PoGcWN0"]
+},
+kathak:{
+Lucknow:["https://youtube.com/shorts/Ce06ZmiMUK8"],
+Jaipur:["https://youtu.be/Qh0GJnnW8GE"],
+Banaras:["https://youtube.com/shorts/mOxESR4RNQI"]
+},
+bollywood:{
+Classical:["https://youtube.com/shorts/hPdeNaWBahc","https://youtube.com/shorts/SpoEWGpmWog"],
+Western:["https://youtube.com/shorts/9IgPM3EC-bw"],
+Folk:["https://youtu.be/ljGS4XOrfUI"]
+},
+contemporary:{
+Lyrical:["https://youtu.be/GFbjAB9bwSc"],
+Modern:["https://youtube.com/shorts/sLSY7RcwOD8"],
+Floorwork:["https://youtube.com/shorts/a75xqWFUY6M"]
+},
+ghoomar:{
+Traditional:["https://youtu.be/tqR6OeF4KVM"],
+Stage:["https://youtu.be/OXjyeKwXp3o"],
+Fusion:["https://youtu.be/2_feRBM3xDk"]
+},
+kathakali:{
+Kalluvazhi:["https://youtu.be/Iu94Ry3mk60"],
+Thekkan:["https://youtube.com/shorts/rd1IzUzMJCs"],
+Vadakkan:["https://youtube.com/shorts/dKYuuZYAZPY"]
+},
+bhangra:{
+Traditional:["https://youtu.be/CSnyZA8hnUc"],
+Stage:["https://youtu.be/2pl4_vew1K8"],
+Fusion:["https://youtu.be/IoPnhNwzbW8"]
+},
+dandiya:{
+Raas:["https://youtu.be/9TQjK3Fxo9w"],
+"Two Stick":["https://youtu.be/J_2fvnfXaOU"],
+Modern:["https://youtu.be/pbdv917Enns"]
+},
+breakdance:{
+Toprock:["https://youtube.com/shorts/fB-g4wslqPY"],
+Footwork:["https://youtu.be/O8oJ2kV2yfM"],
+"Power Moves":["https://youtube.com/shorts/jkpykcSNjAQ"]
+},
+flamenco:{
+Baile:["https://youtu.be/4kKvEPwmKNM"],
+Cante:["https://youtube.com/shorts/0cvNxAOyGwY"],
+Toque:["https://youtube.com/shorts/qiaPu3UoygU"]
+},
+odissi:{
+Mahari:["https://youtube.com/shorts/vGOA6l4QU1c"],
+Gotipua:["https://youtu.be/6ZhiRa9yHgM"],
+Modern:["https://youtu.be/3LdZOeBXg6U"]
+},
+ballet:{
+Classical:["https://youtu.be/elQzVuUDJN0"],
+Neoclassical:["https://youtu.be/B1xPYJ-iS9Y"],
+Contemporary:["https://youtube.com/shorts/_NgN3QBTpvE"]
+},
+garba:{
+Traditional:["https://youtube.com/shorts/yD1QOcTjOCU"],
+Raas:["https://youtu.be/oPygsM-Pg5A"],
+Modern:["https://youtube.com/shorts/Y1CT260NxWk"]
+}
+};
+
+// FUNCTIONS
+function showTypes(dance){
+document.getElementById("info").innerHTML =
+`<h2>${dance.toUpperCase()} 💃</h2><p>${data[dance].desc}</p>`;
+
+let box=document.getElementById("subtypes");
+box.innerHTML="<h3>Select Type 🎯</h3>";
+
+data[dance].types.forEach(type=>{
+box.innerHTML+=`<div class="type-btn" onclick="showVideos('${dance}','${type}')">${type}</div>`;
+});
+
+document.getElementById("videos").innerHTML="";
+}
+
+// extract video id
+function getId(url){
+let match=url.match(/(?:youtu\.be\/|v=|shorts\/)([^&]+)/);
+return match?match[1]:"";
+}
+function showVideos(dance,type){
+let v=document.getElementById("videos");
+let vids=tutorials[dance]?.[type] || [];
+
+v.innerHTML="<h3>Top Tutorials 🎥</h3><div class='video-grid'>";
+
+if(vids.length===0){
+v.innerHTML+="<p>No tutorials available</p>";
+}else{
+vids.forEach(link=>{
+let id=getId(link);
+v.innerHTML+=`
+<div class="video-card">
+<a href="${link}" target="_blank">
+<img src="https://img.youtube.com/vi/${id}/0.jpg">
+<p>Watch Tutorial ⭐⭐⭐⭐</p>
+</a>
+</div>`;
+});
+}
+
+v.innerHTML+="</div>";
+
+/* ✅ WATCH MORE BUTTON */
+let searchQuery = `${dance} ${type} dance tutorial`;
+
+v.innerHTML += `
+<br>
+<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}" target="_blank">
+<button style="padding:10px 20px;background:#ff0000;color:white;border:none;border-radius:8px;cursor:pointer;">
+▶ Watch More on YouTube
+</button>
+</a>
+`;
+}
+</script>
+
+</body>
+</html>
