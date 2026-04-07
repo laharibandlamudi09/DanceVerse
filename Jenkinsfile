@@ -5,20 +5,20 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t dance-app .'
+                bat 'docker build -t dance-app .'
             }
         }
 
         stage('Stop Old Container') {
             steps {
-                sh 'docker stop dance-container || true'
-                sh 'docker rm dance-container || true'
+                bat 'docker stop dance-container || exit 0'
+                bat 'docker rm dance-container || exit 0'
             }
         }
 
         stage('Run New Container') {
             steps {
-                sh 'docker run -d -p 8082:80 --name dance-container dance-app'
+                bat 'docker run -d -p 8082:80 --name dance-container dance-app'
             }
         }
 
